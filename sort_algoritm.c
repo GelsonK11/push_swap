@@ -12,53 +12,92 @@
 
 #include "push_swap.h"
 
-static int get_max_bits(stack **s)  // Pilha como ponteiro para ponteiro
+void	map_stack_to_sorted_indices(t_stack **a, int *sorted, int size)
 {
-    node *head;
-    int max;
-    int max_bits;
+	t_node	*temp;
+	int		i;
 
-    head = (*s)->top;  // Acessa o topo da pilha através do ponteiro para ponteiro
-    max = head->data;  // Acessa o índice do primeiro nó
-    max_bits = 0;
-    while (head)  // Percorre os nós na pilha
-    {
-        if (head->data > max)
-            max = head->data;
-        head = head->next;
-    }
-    while ((max >> max_bits) != 0)
-        max_bits++;
-    return (max_bits);
+	temp = (*a)->top;
+	while (temp)
+	{
+		i = 0;
+		while (i < size)
+		{
+			if (temp->data == sorted[i])
+			{
+				temp->data = i;
+				break ;
+			}
+			i++;
+		}
+		temp = temp->next;
+	}
 }
 
-void radix_sort(stack **a, stack **b)
+void	map_to_indices(t_stack **a, int size)
 {
-    int i;
-    int j;
-    int size;
-    int max_bits;
+	int		*arr;
+	int		*sorted;
+	int		i;
 
-    i = 0;
-    size = ft_stack_size(*a);
-    max_bits = get_max_bits(a);
-    while (i < max_bits)
-    {
-        j = 0;
-        while (j < size)
-        {
-            //printf("Top data: %d, Bit %d: %d\n", (*a)->top->data, i, (((*a)->top->data >> i) & 1));
-            if ((((*a)->top->data >> i) & 1) == 1)
-                ra(a);
-            else
-                pb(a, b);
-            j++;
-        }
-        while (ft_stack_size(*b) != 0)
-            pa(a, b);
-        i++;
-    }
+	arr = copy_stack_to_array(a, size);
+	sorted = (int *)malloc(size * sizeof(int));
+	i = 0;
+	while (i < size)
+	{
+		sorted[i] = arr[i];
+		i++;
+	}
+	quick_sort(sorted, 0, size - 1);
+	map_stack_to_sorted_indices(a, sorted, size);
+	free(arr);
+	free(sorted);
 }
 
+int	calculate_max_bits(int size)
+{
+	int	max_bits;
+	int	max_num;
 
+	max_bits = 0;
+	max_num = size - 1;
+	while ((max_num >> max_bits) != 0)
+		max_bits++;
+	return (max_bits);
+}
 
+void	sort_by_bit(t_stack **a, t_stack **b, int bit, int size)
+{
+	t_node	*temp;
+	int		num;
+	int		j;
+
+	j = 0;
+	while (j < size)
+	{
+		temp = (*a)->top;
+		num = temp->data;
+		if (((num >> bit) & 1) == 1)
+			ra(a);
+		else
+			pb(a, b);
+		j++;
+	}
+	while ((*b)->top)
+		pa(a, b);
+}
+
+void	sort_big_stack(t_stack **a, t_stack **b, int size)
+{
+	int	i;
+	int	max_bits;
+
+	map_to_indices(a, size);
+	max_bits = calculate_max_bits(size);
+	i = 0;
+	while (i < max_bits)
+	{
+		sort_by_bit(a, b, i, size);
+		i++;
+	}
+}

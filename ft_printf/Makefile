@@ -3,41 +3,38 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gkiala <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: gkiala <gkiala@student.42luanda.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/09 10:29:49 by gkiala            #+#    #+#              #
-#    Updated: 2024/09/09 10:37:59 by gkiala           ###   ########.fr        #
+#    Created: 2024/05/27 13:48:29 by gkiala            #+#    #+#              #
+#    Updated: 2024/05/27 13:48:32 by gkiala           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = push_swap
+NAME = libftprintf.a
 
-CC = cc
+SRCS =  ftprintf.c funte.c
 
-CFLAGS = -Wall -Wextra -Werror
+CC = gcc
 
-SRCS = main.c operations.c operations2.c sort_2345.c stack.c utils.c utils2.c utils3.c sort_algoritm.c quick_sort.c
+FLAGS = -c -Wall -Wextra -Werror
+
 OBJS = $(SRCS:.c=.o)
 
-FT_PRINTF = ft_printf/libftprintf.a
-
-all: $(NAME)
+all : $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
-	make -C ft_printf
-	$(CC) $(OBJS) $(FT_PRINTF) -o $(NAME)
+	ar -rc $(NAME) $(OBJS)
+	ranlib $(NAME)	
 
-clean:
-	make clean -C ft_printf
+clean :
 	/bin/rm -rf $(OBJS)
 
-fclean: clean
-	make fclean -C ft_printf
+fclean : clean
 	/bin/rm -rf $(NAME)
 
-re: fclean all
+re : fclean all
 
 .PHONY: all clean fclean re

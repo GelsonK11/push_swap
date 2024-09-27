@@ -12,43 +12,80 @@
 
 #include "push_swap.h"
 
-void ra(stack **a)
+void	ra(t_stack **a)
 {
-    if (is_Empty(*a) || (*a)->top->next == NULL)
-        return;
+	t_node	*current;
+	t_node	*first;
 
-    node *first = (*a)->top;
-    (*a)->top = (*a)->top->next;
-    first->next = NULL;
-
-    node *current = (*a)->top;
-    while (current->next != NULL)
-    {
-        current = current->next;
-    }
-    current->next = first;
+	if (is_empty(*a) || (*a)->top->next == NULL)
+		return ;
+	first = (*a)->top;
+	(*a)->top = (*a)->top->next;
+	first->next = NULL;
+	current = (*a)->top;
+	while (current->next != NULL)
+	{
+		current = current->next;
+	}
+	current->next = first;
+	write (1, "ra\n", 3);
 }
 
-void rb(stack **b)
+void	rb(t_stack **b)
 {
-    if (is_Empty(*b) || (*b)->top->next == NULL)
-        return;
+	t_node	*current;
+	t_node	*first;
 
-    node *first = (*b)->top;
-    (*b)->top = (*b)->top->next;
-    first->next = NULL;
-
-    node *current = (*b)->top;
-    while (current->next != NULL)
-    {
-        current = current->next;
-    }
-    current->next = first;
+	if (is_empty(*b) || (*b)->top->next == NULL)
+		return ;
+	first = (*b)->top;
+	(*b)->top = (*b)->top->next;
+	first->next = NULL;
+	current = (*b)->top;
+	while (current->next != NULL)
+	{
+		current = current->next;
+	}
+	current->next = first;
+	write (1, "rb\n", 3);
 }
 
-
-void rr(stack **a, stack **b)
+void	rra(t_stack **a)
 {
-    ra(a);
-    rb(b);
+	t_node	*current;
+	t_node	*prev;
+
+	if (is_empty(*a) || (*a)->top->next == NULL)
+		return ;
+	current = (*a)->top;
+	prev = NULL;
+	while (current->next != NULL)
+	{
+		prev = current;
+		current = current->next;
+	}
+	prev->next = NULL;
+	current->next = (*a)->top;
+	(*a)->top = current;
+	write (1, "rra\n", 4);
+}
+
+void	rrb(t_stack **b)
+{
+	t_node	*current;
+	t_node	*prev;
+
+	if (is_empty(*b) || (*b)->top->next == NULL)
+		return ;
+	current = (*b)->top;
+	prev = NULL;
+	while (current->next != NULL)
+	{
+		prev = current;
+		current = current->next;
+	}
+	prev->next = NULL;
+	current->next = (*b)->top;
+	(*b)->top = current;
+	write (1, "rrb\n", 3);
 }

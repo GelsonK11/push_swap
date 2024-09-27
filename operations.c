@@ -12,61 +12,41 @@
 
 #include "push_swap.h"
 
-void sa(stack **a)
+void	sa(t_stack **a)
 {
-    if (is_Empty(*a) || (*a)->top->next == NULL)
-    {
-        printf("Não é possível trocar elementos: a pilha está vazia ou tem menos de dois elementos\n");
-        return;
-    }
+	t_node	*first;
+	t_node	*second;
 
-    node *first = (*a)->top;
-    node *second = (*a)->top->next;
-
-    first->next = second->next;
-    second->next = first;
-    (*a)->top = second;
-    printf("sa\n");
+	first = (*a)->top;
+	second = (*a)->top->next;
+	if (is_empty(*a) || (*a)->top->next == NULL)
+		return ;
+	first->next = second->next;
+	second->next = first;
+	(*a)->top = second;
+	write(1, "sa\n", 3);
 }
 
-
-void sb(stack **b)
+void	pa(t_stack **a, t_stack **b)
 {
-    if (is_Empty(*b) || (*b)->top->next == NULL)
-    {
-        printf("Não é possível trocar elementos: a pilha está vazia ou tem menos de dois elementos\n");
-        return;
-    }
+	int	value;
 
-    node *first = (*b)->top;
-    node *second = (*b)->top->next;
-
-    first->next = second->next;
-    second->next = first;
-    (*b)->top = second; 
+	if (!is_empty(*b))
+	{
+		value = pop(*b);
+		push_front(a, value);
+		write(1, "pa\n", 3);
+	}
 }
 
-void ss(stack **a, stack **b)
+void	pb(t_stack **a, t_stack **b)
 {
-	sa(a);
-	sb(b);
-}
+	int	value;
 
-void pa(stack **a, stack **b)
-{
-    if (!is_Empty(*b))
-    {
-        int value = pop(*b);
-        push(*a, value);
-    }
-}
-
-
-void pb(stack **a, stack **b)
-{
-    if (!is_Empty(*a))
-    {
-        int value = pop(*a);
-        push(*b, value);
-    }
+	if (!is_empty(*a))
+	{
+		value = pop(*a);
+		push_front(b, value);
+		write(1, "pb\n", 3);
+	}
 }

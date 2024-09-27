@@ -10,56 +10,67 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <unistd.h>
+# include "ft_printf/ft_printf.h"
+# include <stdlib.h>
+# include <limits.h>
+# include <unistd.h>
+# include <stddef.h>
 
 typedef struct s_node
 {
-    int data;      // Membro existente para dados do nó
-    //int index;     // Membro adicionado para o índice
-    struct s_node *next;
-} node;
+	int				data;
+	struct s_node	*next;
+}	t_node;
 
-typedef struct
+typedef struct s_stack
 {
-    node *top;  // Ponteiro para o topo da pilha (lista encadeada)
-} stack;
+	t_node	*top;
+}	t_stack;
 
-void	push(stack *s, int value);
-void	print_stack(stack *s);
-void	init(stack *s);
-int		peek(stack *s);
-int		is_Empty(stack *s);
-int		pop(stack *s);
+void	push(t_stack **s, int value);
+void	push_front(t_stack **s, int value);
+void	init(t_stack *s);
+void	free_stack(t_stack *s);
+void	sa(t_stack **a);
+void	sb(t_stack **b);
+void	ss(t_stack **a, t_stack **b);
+void	pa(t_stack **a, t_stack **b);
+void	pb(t_stack **a, t_stack **b);
+void	ra(t_stack **a);
+void	rb(t_stack **b);
+void	rr(t_stack **a, t_stack **b);
+void	rra(t_stack **a);
+void	rrb(t_stack **b);
+void	rrr(t_stack **a, t_stack **b);
+void	sort_three(t_stack **a);
+void	sort_two(t_stack **a);
+void	sort_fourth(t_stack **a, t_stack **b);
+void	sort_fifth(t_stack **a, t_stack **b);
+void	ft_error(void);
+int		is_empty(t_stack *s);
+int		pop(t_stack *s);
 int		ft_atoi(char *str);
-int	is_sorted(stack *s);
-void	free_stack(stack *s);
-void	sa(stack **a);
-void	sb(stack **b);
-void	ss(stack **a, stack **b);
-void	pa(stack **a, stack **b);
-void	pb(stack **a, stack **b);
-void	ra(stack **a);
-void	rb(stack **b);
-void	rr(stack **a, stack **b);
-void	rra(stack **a);
-void	rrb(stack **b);
-void	rrr(stack **a, stack **b);
-void	sort_three(stack **a);
-void	sort_two(stack **a);
-void	sort_fourth(stack **a, stack **b);
-void sort_fifth(stack **a, stack **b);
-void ft_error();
-int	ft_checkdup(stack *a);
-int 	ft_stack_size(stack *a);
-void radix_sort(stack **a, stack **b);
-void	ft_putstr(char *s);
-
+int		is_sorted(t_stack *s);
+int		ft_checkdup(t_stack *a);
+int		ft_stack_size(t_stack *a);
+int		find_max_index(t_stack *s);
+int		find_min_index(t_stack *s);
+int		calculate_max_bits(int size);
+int		partition(int arr[], int low, int high);
+int		*copy_stack_to_array(t_stack **a, int size);
+size_t	ft_strlcpy(char *dest, const char *src, size_t size);
+char	**ft_split(char const *s, char c);
+void	map_stack_to_sorted_indices(t_stack **a, int *sorted, int size);
+void	map_to_indices(t_stack **a, int size);
+void	sort_big_stack(t_stack **a, t_stack **b, int size);
+void	sort_by_bit(t_stack **a, t_stack **b, int bit, int size);
+void	swap(int *a, int *b);
+void	quick_sort(int arr[], int low, int high);
+void	handle_sorting(t_stack **a, t_stack **b, int num);
+void	free_resources(t_stack *a, t_stack *b, char **args, int argc);
+void	initialize_stacks(t_stack **a, t_stack **b);
 
 #endif

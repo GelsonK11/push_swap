@@ -12,12 +12,15 @@
 
 #include "push_swap.h"
 
-int ft_atoi(char *str)
+int	ft_atoi(char *str)
 {
-	int i = 0;
-	int sign = 1;
-	long result = 0;
+	int		i;
+	int		sign;
+	long	result;
 
+	i = 0;
+	sign = 1;
+	result = 0;
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
 	if (str[i] == '+')
@@ -29,96 +32,91 @@ int ft_atoi(char *str)
 	}
 	while (str[i])
 	{
-		if(!(str[i] >= '0' && str[i] <= '9'))
+		if (!(str[i] >= '0' && str[i] <= '9'))
 			ft_error();
-		result = result * 10 + (str[i] - '0');
-		i++;
+		result = result * 10 + (str[i++] - '0');
 	}
 	if ((result * sign) > INT_MAX || (result * sign) < INT_MIN)
 		ft_error();
-	return((int)(result * sign));
+	return ((int)(result * sign));
 }
 
-int	ft_checkdup(stack *a)
+int	ft_checkdup(t_stack *a)
 {
-    node *current;
-    node *tmp; 
+	t_node	*current;
+	t_node	*tmp;
 
-    if (!a || !a->top)
-        return (0);
-    
-    current = a->top;
-
-    while (current) 
-    {
-        tmp = current->next; 
-        while (tmp) 
-        {
-            if (current->data == tmp->data)
-                return (1); 
-            tmp = tmp->next;  
-        }
-        current = current->next; 
-    }
-    return (0);
+	if (!a || !a->top)
+		return (0);
+	current = a->top;
+	while (current)
+	{
+		tmp = current->next;
+		while (tmp)
+		{
+			if (current->data == tmp->data)
+				return (1);
+			tmp = tmp->next;
+		}
+		current = current->next;
+	}
+	return (0);
 }
 
-void ft_error()
+void	ft_error(void)
 {
 	write (1, "Error\n", 6);
 	exit(1);
 }
 
-int 	ft_stack_size(stack *a)
+int	find_max_index(t_stack *s)
 {
-	node *current;
-	int 	size = 0;
+	int		max_index;
+	int		max_value;
+	int		current_index;
+	t_node	*current;
 
-	current = a->top;
-
-	while(current)
+	if (s == NULL || s->top == NULL)
+		return (-1);
+	max_index = 0;
+	max_value = s->top->data;
+	current_index = 0;
+	current = s->top;
+	while (current != NULL)
 	{
-		size++;
+		if (current->data > max_value)
+		{
+			max_value = current->data;
+			max_index = current_index;
+		}
 		current = current->next;
+		current_index++;
 	}
-	return(size);
+	return (max_index);
 }
 
-int find_max_index(stack *s)
+int	find_min_index(t_stack *s)
 {
-    if (s == NULL || s->top == NULL)
-    {
-        return -1;
-    }
+	int		min_index;
+	int		min_value;
+	int		current_index;
+	t_node	*current;
 
-    int max_index = 0;
-    int max_value = s->top->data;
-    int current_index = 0;
-    node *current = s->top;
-
-    while (current != NULL)
-    {
-        if (current->data > max_value)
-        {
-            max_value = current->data;
-            max_index = current_index;
-        }
-        current = current->next;
-        current_index++;
-    }
-    return (max_index);
-}
-
-/*int 	ft_target(stack **a, stack **b, int num)
-{
-	int min_index = find_min_index(a);
-	int max_index = find_max_index(b);
-	num = (*b->top);
-
-	if ( num > max_index)
+	if (s == NULL || s->top == NULL)
+		return (-1);
+	min_index = 0;
+	min_value = s->top->data;
+	current_index = 0;
+	current = s->top;
+	while (current != NULL)
 	{
-		ft_target(a, b, )
+		if (current->data < min_value)
+		{
+			min_value = current->data;
+			min_index = current_index;
+		}
+		current = current->next;
+		current_index++;
 	}
-	else
-
-}*/
+	return (min_index);
+}

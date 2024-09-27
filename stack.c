@@ -12,101 +12,92 @@
 
 #include "push_swap.h"
 
-void	init(stack *s)
+t_node	*new_t_node(int value)
 {
-	s->top = NULL;
+	t_node	*new;
+
+	new = (t_node *)malloc(sizeof(t_node));
+	if (!new)
+		return (NULL);
+	new->data = value;
+	new->next = NULL;
+	return (new);
 }
 
-int	is_Empty(stack *s)
+void	push(t_stack **s, int value)
 {
-	return(s->top == NULL);
-}
+	t_node	*new;
+	t_node	*ptr;
 
-node *new_node(int value)
-{
-    node *new = malloc(sizeof(node));
-    if (!new)
-        return NULL;
-    new->data = value;
-    new->next = NULL;
-    return new;
-}
-
-void push(stack *s, int value)
-{
-    node *new = new_node(value);
-    if (!new)
-    {
-        printf("Erro ao alocar memória para um novo nó.\n");
-        return;
-    }
-
-    new->next = s->top;
-    s->top = new;
-}
-
-void	print_stack(stack *s)
-{
-	node *current = s->top;
-	while(current != NULL)
+	new = new_t_node(value);
+	if (!new)
+		return ;
+	if (*s == NULL)
 	{
-		printf("%d ", current->data);
-		current = current->next;
-    }
-    //ft_putstr("sa");
-	printf("\n");
-}
-
-void free_stack(stack *s)
-{
-	node *current = s->top;
-	while (current != NULL)
-	{
-		node *temp = current;
-		current = current->next;
-		free(temp);
+		*s = (t_stack *)malloc(sizeof(t_stack));
+		if (!*s)
+		{
+			free(new);
+			return ;
+		}
+		(*s)->top = NULL;
 	}
-	s->top = NULL;
+	if ((*s)->top == NULL)
+		(*s)->top = new;
+	else
+	{
+		ptr = (*s)->top;
+		while (ptr->next != NULL)
+			ptr = ptr->next;
+		ptr->next = new;
+	}
 }
 
-int peek(stack *s)
+void	push_front(t_stack **s, int value)
 {
-    if (is_Empty(s))
-    {
-        printf("Erro: a pilha está vazia.\n");
-        return (-1);
-    }
-    return s->top->data;
+	t_node	*new;
+
+	if (!s || !*s)
+		return ;
+	new = new_t_node(value);
+	if (!new)
+		return ;
+	new->next = (*s)->top;
+	(*s)->top = new;
 }
 
-int pop(stack *s)
+int	pop(t_stack *s)
 {
-    if (is_Empty(s))
-    {
-        printf("A pilha está vazia, não é possível fazer pop\n");
-        return -1;
-    }
+	int		value;
+	t_node	*top;
 
-    node *top = s->top;
-    int value = top->data;
-    s->top = top->next;
-    free(top);
-    return value;
+	if (is_empty(s))
+	{
+		return (-1);
+	}
+	top = s->top;
+	value = top->data;
+	s->top = top->next;
+	free(top);
+	return (value);
 }
 
-int is_sorted(stack *s)
+int	is_sorted(t_stack *s)
 {
-    if (s->top == NULL || s->top->next == NULL)
-        return 1;
+	t_node	*current;
 
-    node *current = s->top;
-
-    while (current->next != NULL)
-    {
-        if (current->data < current->next->data)
-            return (0);
-        current = current->next;
-    }
-
-    return (1);
+	if (s->top == NULL || s->top->next == NULL)
+	{
+		return (1);
+	}
+	current = s->top;
+	while (current->next != NULL)
+	{
+		if (current->data > current->next->data)
+		{
+			return (0);
+		}
+		current = current->next;
+	}
+	return (1);
 }
